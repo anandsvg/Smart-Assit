@@ -1,0 +1,22 @@
+<div ng-controller="ServiceProviderListCtrl as ServiceProvider">
+	<table class="table table-bordered table-striped table-hover">		
+		<thead>
+			<tr>
+				<td>Service Provider</td>
+				<td>Email</td>
+				<td>Actions</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="sp in ServiceProvider.get() | orderBy:company">
+				<td>\{{sp.company}}</td>
+				<td>\{{sp.email}}</td>
+				<td>
+					<button class="btn btn-primary" ng-click="ServiceProvider.select(sp._id)">Select</button>
+					<a href="#/service-provider/\{{sp._id}}/modify" class="btn btn-default">Modify</a>
+					<button class="btn btn-danger" ng-click="ServiceProvider.remove(sp._id)">Remove</button>
+				</td>
+			</tr>			
+		</tbody>
+	</table>
+</div>

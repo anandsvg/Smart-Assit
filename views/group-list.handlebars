@@ -1,0 +1,21 @@
+<div ng-controller="GroupListCtrl as g">
+	<table class="table table-bordered table-striped table-hover">		
+		<thead>
+			<tr>
+				<th>Label</th>
+				<th>Type</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="group in groups | orderBy:label">
+				<td>\{{group.label}}</td>
+				<td>\{{group.type}}</td>
+				<td>
+					<a href="#/group/\{{group._id}}/modify" class="btn btn-default">Modify</a>
+					<button class="btn btn-danger" ng-click="g.remove(group._id)">Remove</button>
+				</td>
+			</tr>			
+		</tbody>
+	</table>
+</div>

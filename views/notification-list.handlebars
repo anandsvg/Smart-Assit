@@ -1,0 +1,19 @@
+<div ng-controller="NotificationListCtrl as Notification">
+	<table class="table table-bordered table-striped table-hover">		
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="n in notifications | orderBy:title">
+				<td>\{{n.name}}</td>
+				<td>
+					<a href="#/notification/\{{n._id}}" class="btn btn-default">Modify</a>
+					<button class="btn btn-danger" ng-click="Notification.remove(e._id)">Remove</button>
+				</td>
+			</tr>			
+		</tbody>
+	</table>
+</div>

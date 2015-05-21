@@ -1,0 +1,97 @@
+section header.tab-bg-dark-green {
+	background: #53A753;
+	border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+	border-bottom: none;	
+}
+
+section.fixed-bottom {
+	//padding-bottom:30px;
+}
+
+.scroll-pane {
+	overflow: auto;
+}
+
+#form-bottom-bar {
+	position:fixed;
+	bottom:0px;
+	right:0px;
+	width:100%;
+	background:rgba(100,100,100,0.8);
+	z-index:999;
+}
+
+ul#form-buttons-right {
+	float: right;
+	margin-right: 20px;
+}
+
+ul#form-buttons-left {
+	float:left;
+	margin-left:220px;
+}
+
+ul.form-buttons li {
+	margin-left: 15px;
+	padding: 10px 0px;
+}
+ul.sidebar-menu li a {
+	cursor: pointer;
+}
+
+section.question > .panel-body {
+	background: #EFEFEF;
+}
+
+.options .option {
+	padding-top: 10px;
+}
+.even {
+	background-color: #F1F2F7;
+}
+.odd {
+    background-color: #F9F9F9;
+}
+.questionnaire section header {
+	height:43px;
+	cursor: pointer;
+}
+.questionnaire section header .title {
+	font-weight:bolder;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.panel-primary .tools a {
+	color: #F1F2F7;
+}
+.questionnaire ul.nav-tabs {
+	border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+	border-bottom: none;	
+}
+.questionnaire ul.nav-tabs li a {
+	color: #FFF;
+}
+.questionnaire ul.nav-tabs li.active a, .questionnaire ul.nav-tabs li a:hover {
+	color: #47596F;
+	background: #FFF;
+}
+.questionnaire .tab-content {
+	//padding: 15px;
+}
+.required-symbol {
+	color:#F00;
+	padding-left:7px;
+}
+.nav-stacked ul {
+	margin-left: 15px !important;
+}
+.nav-stacked ul li.active > a {
+	font-weight: bold;
+}
+.nav-stacked ul li.child > a {
+	background: #D9EDF7;
+	font-weight: bold;
+}

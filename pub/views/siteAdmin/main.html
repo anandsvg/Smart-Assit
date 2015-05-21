@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Mosaddek">
+    <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>SimplAssist</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/style-responsive.css" rel="stylesheet" />
+    <link href="/css/smartassist.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+  <section id="container" class="">
+      <!--header start-->
+      <header class="header white-bg" ng-controller="TopNavCtrl as topNav">
+          <div class="sidebar-toggle-box">
+              <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
+          </div>
+          <!--logo start-->
+          <a href="/" class="logo" >Simpl<span>Assist</span></a>
+          <!--logo end-->
+          <div class="nav notify-row" id="top_menu"></div>
+          <div class="top-nav ">
+              <ul class="nav pull-right top-menu">
+                  <li>
+                    <select 
+                      ng-options="sp._id as sp.company for sp in data.serviceProviders"
+                      ng-model="data.serviceProvider"
+                      ng-change="selectServiceProvider()"
+                      class="form-control"
+                      ></select>
+                  </li>
+
+                  <!-- user login dropdown start-->
+                  <li class="dropdown">
+                      <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                          <!--<img alt="" src="img/avatar1_small.jpg">-->
+                          <span class="username" ng-bind="getName()"></span>
+                          <b class="caret"></b>
+                      </a>
+                      <ul class="dropdown-menu extended logout">
+                          <div class="log-arrow-up"></div>
+                          <li><a ui-sref="your-account"><i class=" fa fa-suitcase"></i>Your Account</a></li>
+                          <li><a href="#" ui-sref="logout"><i class="fa fa-key"></i> Log Out</a></li>
+                      </ul>
+                  </li>
+                  <!-- user login dropdown end -->
+              </ul>
+          </div>
+      </header>
+      <!--header end-->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion" ng-controller="SideNavCtrl as sideNav">
+
+              	<li class="sub-menu" ng-class="sideNav.getParent('/service-provider')">
+              		<a ng-class="sideNav.getParent('/service-provider')" ng-click="sideNav.isCollapsed['service-provider'] = !sideNav.isCollapsed['service-provider']"><span>Service Providers</span></a>
+              		<ul class="sub" ng-hide="sideNav.isCollapsed['service-provider']">
+						        <li ng-class="sideNav.getActive('/service-provider')">
+							       <a ui-sref="service-provider">Service Providers</a>
+						        </li>
+        					  <li ng-class="sideNav.getActive('/service-provider/add')">
+        							<a ui-sref="service-provider/add">Add Service Provider</a>
+        						</li>			                              			
+              		</ul>
+              	</li>
+
+                <li class="sub-menu" ng-class="sideNav.getParent('/group')" ng-show="sideNav.isServiceProviderSelected()">
+                  <a ng-class="sideNav.getParent('/group')" ng-click="sideNav.isCollapsed.group = !sideNav.isCollapsed.group"><span>Groups</span></a>
+                  <ul class="sub" ng-hide="sideNav.isCollapsed.group">
+                    <li ng-class="sideNav.getActive('/group')">
+                     <a ui-sref="group">Groups</a>
+                    </li>
+                    <li ng-class="sideNav.getActive('/group/add')">
+                      <a ui-sref="group/add">Add Group</a>
+                    </li>                                         
+                  </ul>
+                </li>                                                
+
+                <li class="sub-menu" ng-class="sideNav.getParent('/user')" ng-show="sideNav.isServiceProviderSelected()">
+                  <a ng-class="sideNav.getParent('/user')" ng-click="sideNav.isCollapsed.user = !sideNav.isCollapsed.user"><span>Users</span></a>
+                  <ul class="sub" ng-hide="sideNav.isCollapsed.user">
+                    <li ng-class="sideNav.getActive('/user')">
+                     <a ui-sref="user">Users</a>
+                    </li>
+                    <li ng-class="sideNav.getActive('/user/add')">
+                      <a ui-sref="user/add">Add User</a>
+                    </li>                                         
+                  </ul>
+                </li>                                
+
+                <li class="sub-menu" ng-class="sideNav.getParent('/questionnaire')" ng-show="sideNav.isServiceProviderSelected()">
+                  <a ng-class="sideNav.getParent('/questionnaire')" ng-click="sideNav.isCollapsed.questionnaire = !sideNav.isCollapsed.questionnaire"><span>Questionnaires</span></a>
+                  <ul class="sub" ng-hide="sideNav.isCollapsed.questionnaire">
+                    <li ng-class="sideNav.getActive('/questionnaire')">
+                     <a ui-sref="questionnaire">Questionnaires</a>
+                    </li>
+                    <li ng-class="sideNav.getActive('/questionnaire/add')">
+                      <a ui-sref="questionnaire/add">Add Questionnaire</a>
+                    </li>         
+                    <li ng-class="sideNav.getActive('/questionnaire/submissions')">
+                      <a ui-sref="questionnaire/submissions">Submissions</a>
+                    </li>                                                    
+                  </ul>
+                </li>
+
+                <li class="sub-menu" ng-class="sideNav.getParent('/action')" ng-show="sideNav.isServiceProviderSelected()">
+                  <a ng-class="sideNav.getParent('/action')" ng-click="sideNav.isCollapsed.action = !sideNav.isCollapsed.action"><span>Actions</span></a>
+                  <ul class="sub" ng-hide="sideNav.isCollapsed.action">
+                    <li ng-class="sideNav.getActive('/action')">
+                     <a ui-sref="action">Actions</a>
+                    </li>
+                    <li ng-class="sideNav.getActive('/action/add')">
+                      <a ui-sref="action/add">Add Action</a>
+                    </li>      
+                    <li ng-class="sideNav.getActive('/action/log')">
+                      <a ui-sref="action/log">Action Log</a>
+                    </li>                                                       
+                  </ul>
+                </li>                
+
+                <li class="sub-menu" ng-class="sideNav.getParent('/event')" ng-show="sideNav.isServiceProviderSelected()">
+                  <a ng-class="sideNav.getParent('/event')" ng-click="sideNav.isCollapsed.event = !sideNav.isCollapsed.event"><span>Events</span></a>
+                  <ul class="sub" ng-hide="sideNav.isCollapsed.event">
+                    <li ng-class="sideNav.getActive('/event')">
+                     <a ui-sref="event">Events</a>
+                    </li>
+                    <li ng-class="sideNav.getActive('/event/add')">
+                      <a ui-sref="event/add">Add Event</a>
+                    </li>                                         
+                  </ul>
+                </li>                                
+
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper site-min-height">
+              <!-- page start-->
+              <div ui-view></div>
+              <!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
+  </section>
+
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="/components/requirejs/require.js" data-main="/scripts/site-admin/main.js"></script>
+
+  </body>
+</html>

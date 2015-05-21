@@ -1,0 +1,146 @@
+<form name="previewForm" ng-submit="submit()" novalidate>
+	<div class="panel panel-primary">		
+		<header class="panel-heading">			
+			\{{data.title}}
+		</header>					
+		<div class="panel-body">
+			<div ng-repeat="ques in data.questions">
+				<div class="form-group">
+					<label class="question-text">											
+						<b ng-if="data.numberingStyle=='number-dot'">\{{$index+1}}.&nbsp;</b>
+						<b ng-if="data.numberingStyle=='number-parentheses'">\{{$index+1}})&nbsp;</b>
+						\{{ques.label}}
+						<b class="required-symbol" ng-show="ques.required">*</b>
+					</label>
+					<div ng-switch on="ques.type">
+
+						<!-- TEXT -->
+						<div ng-switch-when="text" ng-form="item">
+							<input 
+								type="text" 
+								name="text" 
+								ng-model="ques.value" 
+								class="form-control" 
+								ng-required="ques.required" 
+								ng-init="ques.value=ques.defaultText">
+
+							<div class="alert alert-danger" ng-show="item.text.$error.required">This field is required.</div>
+						</div>	
+						<!-- END TEXT -->
+
+						<!-- TEXTAREA -->
+						<div ng-switch-when="textarea" ng-form="item">
+							<textarea 
+								name="text" 
+								ng-model="ques.value" 
+								class="form-control" 
+								ng-required="ques.required"
+								ng-init="ques.value=ques.defaultText">
+							</textarea>
+
+							<div class="alert alert-danger" ng-show="item.text.$error.required">This field is required.</div>
+						</div>	
+						<!-- END TEXTAREA -->											
+
+						<!-- RADIO -->
+						<div ng-switch-when="radio" ng-form="item">
+							<div ng-repeat="opt in ques.options">
+								<div class="radio">
+									<label class="control-label">\{{opt.label}}
+										<input 
+											type="radio" 
+											name="radio" 
+											ng-model="ques.value" 
+											value="\{{opt.value}}" 
+											ng-required="ques.required" 
+											ng-checked="opt.selected"
+											inputted-default>
+									</label>
+								</div>
+							</div>
+							<div class="alert alert-danger" ng-show="item.radio.$error.required">This field is required.</div>					
+						</div>
+						<!-- END RADIO -->
+
+						<!-- CHECKBOX -->
+						<div ng-switch-when="checkbox" ng-form="item">
+							<div ng-repeat="opt in ques.options">
+								<div class="checkbox">
+									<label class="control-label">\{{opt.label}}
+										<input 
+											type="checkbox" 
+											name="checkbox" 
+											ng-model="opt.selected" 
+											value="\{{opt.value}}" 
+											ng-required="ques.required" 
+											ng-checked="opt.selected"
+											inputted-default>
+									</label>
+								</div>
+							</div>
+							<div class="alert alert-danger" ng-show="item.checkbox.$error.required">This field is required.</div>					
+						</div>
+						<!-- END CHECKBOX -->											
+
+						<!-- LIST -->
+						<div ng-switch-when="list" ng-form="item">
+							<input-list name="inputlist" ng-model="ques.value">
+								<div ng-repeat="item in ques.value" class="row" style="margin:10px 0px;">
+									<div class="input-group">
+										<input 
+											type="text" 
+											name="list" 
+											ng-model="item.value" 
+											class="form-control"
+										>		
+										<span class="input-group-btn">
+											<button 
+												type="button" 
+												class="btn btn-danger" 
+												ng-click="ques.value.splice($index,1)"
+											>
+												<i class="fa fa-minus"></i>
+											</button>				
+										</span>				
+									</div>
+								</div>
+								<div style="margin:10px 0px;">
+									<button 
+										type="button" 
+										class="btn btn-primary pull-right" 
+										ng-click="ques.value.push({value:''})"
+									>
+										<i class="fa fa-plus"></i>
+									</button>					
+									<div class="clearfix"></div>						
+								</div>
+							</input-list>
+
+							<div class="alert alert-danger" ng-show="ques.required && item.$dirty && item.inputlist.$error.listRequired">This field is required.</div>	
+						</div>
+						<!-- END LIST -->
+					</div>										
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer">
+			<div class="pull-right">
+				<button 
+					type="button" 
+					class="btn btn-danger" 
+					ng-click="reset()">
+					<i class="fa fa-refresh"></i>
+					&nbsp;Reset
+				</button>									
+				<button 
+					type="submit" 
+					class="btn btn-primary" 
+					ng-class="{'btn-primary':previewForm.$valid,'btn-danger':previewForm.$invalid}" 
+					ng-disabled="previewForm.$invalid">
+						\{{data.submitText}}
+				</button>
+			</div>
+			<div class="clearfix"></div>
+		</div>					
+	</div>
+</form>

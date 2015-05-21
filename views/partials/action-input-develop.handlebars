@@ -1,0 +1,30 @@
+<form name="inputAction" id="input-action" role="form" class="questionnaire" onsubmit="return false;">
+	<section class="panel">
+		<header class="panel-heading tab-bg-dark-green">
+			<ul class="nav nav-tabs">
+				<li ng-class="{'active': router.activeDevelopTab == 'general'}">
+					<a ng-click="router.changeView('develop','general')">General</a>
+				</li>
+				<li ng-class="{'active': router.activeDevelopTab == 'questions'}">
+					<a ng-click="router.changeView('develop','questions')">Questions</a>
+				</li>				
+				<li ng-class="{'active': router.activeDevelopTab == 'event'}">
+					<a ng-click="router.changeView('develop','event')">Event</a>
+				</li>								
+			</ul>
+		</header>
+		<div class="panel-body">
+			<div class="tab-content">
+				<div id="general-pane" class="tab-pane scroll-pane" ng-class="{'active': router.activeDevelopTab == 'general'}">
+					{{> action-input-develop-general}}					
+				</div>
+				<div id="questions-pane" class="tab-pane scroll-pane" ng-class="{'active': router.activeDevelopTab == 'questions'}">
+					{{> action-input-develop-questions}}				
+				</div>				
+				<div id="event-pane" class="tab-pane scroll-pane" ng-class="{'active': router.activeDevelopTab == 'event'}">
+					{{> action-input-develop-event}}			
+				</div>
+			</div>
+		</div>
+	</section>
+</form>

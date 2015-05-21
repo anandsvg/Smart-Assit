@@ -1,0 +1,593 @@
+<div ng-controller="EventCtrl as e" class="row">
+	<div class="col-lg-6" id="EventContainer">
+		<section class="panel">
+			<header class="panel-heading">
+				<span ng-bind="actionTitle"></span>
+			</header>
+			<div class="panel-body">
+
+				<form name="eventForm" ng-if="view == 'event'" novalidate>
+					<div class="form-group">
+						<label class="control-label">Name<span class="required-symbol">*</span></label>
+						<input 
+							type="text" 
+							ng-model="eventData.name"
+							class="form-control"
+							required
+						>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Description</label>
+						<textarea
+							ng-model="eventData.description"
+							class="form-control"
+						></textarea>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Implements</label>
+						<select
+							ng-model="eventData.implements"
+							class="form-control"
+							ng-options="i.value as i.label for i in implementOptions">
+							<option value="">-Select Implementation-</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">Status Message</label>
+						<input type="text" ng-model="eventData.status" class="form-control">
+					</div>
+
+					<div class="form-group">
+						<label class="control-label">Status Code</label>
+						<input type="number" ng-model="eventData.statusCode" class="form-control">
+					</div>					
+
+					<div 
+						class="form-group"
+						ng-if="currentId != 'add'">
+						<h4 class="page-header">Notifications</h4>
+
+						<ul
+							class="list-group">
+							<li
+								class="list-group-item"
+								ng-repeat="notification in eventData.items">
+								<h5 
+									class="pull-left"
+									ng-bind="notification.name"></h5>
+								<div class="btn-toolbar">
+									<div class="pull-right">
+										<button
+											type="button"
+											class="btn btn-primary"
+											ng-click="changeView(notification.type,notification.id)"
+										>Modify</button>
+										<button
+											type="button"
+											class="btn btn-danger"
+											ng-click="removeNotification(notification.id)"
+										>Remove</button>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+							</li>
+						</ul>
+
+						<div class="btn-toolbar">
+							<div class="pull-right">
+								<button
+									type="button"
+									class="btn btn-success"									
+									ng-click="addNewNotification(currentId)"
+								>Add New Notification</button>								
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+
+					<div class="btn-toolbar">						
+						<div class="pull-right">							
+
+							<button 
+								type="button" 
+								class="btn btn-primary" 
+								ng-click="submit()"
+								ng-disabled="eventForm.$invalid"
+							>
+								<i class="fa fa-save"></i>&nbsp;
+								<span ng-bind="actionButton"></span>
+							</button>
+
+						</div>
+						<div class="clearfix"></div>
+					</div>						
+				</form>		
+
+				<form name="notificationForm" ng-if="view == 'notification'" novalidate>
+					<div 
+						ng-if="!notificationData.copyId">
+						<div class="form-group">
+							<label class="control-label">Name<span class="required-symbol">*</span></label>
+							<input 
+								type="text" 
+								ng-model="notificationData.name"
+								name="name"
+								class="form-control"
+								required
+							> 
+						</div>
+						<div class="form-group">
+							<label class="control-label">Description</label>
+							<textarea
+								ng-model="notificationData.description"
+								class="form-control"
+							></textarea>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Open Application Immediately</label>
+							<select
+								ng-model="notificationData.openApplicationImmediately"
+								class="form-control"
+							>
+								<option value="true">True</option>
+								<option value="false">False</option>
+							</select>
+						</div>						
+						<div class="form-group">
+							<label class="control-label">Open Notification Immediately</label>
+							<select
+								ng-model="notificationData.openImmediately"
+								class="form-control"
+							>
+								<option value="true">True</option>
+								<option value="false">False</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Show Action User As Title</label>
+							<select
+								ng-model="notificationData.userAsTitle"
+								class="form-control"
+							>
+								<option value="true">True</option>
+								<option value="false">False</option>
+							</select>
+						</div>
+						<div 
+							class="form-group"
+							ng-show="notificationData.userAsTitle=='false'"
+						>
+							<label class="control-label">Title<span class="required-symbol">*</span></label>
+							<input 
+								type="text" 
+								ng-model="notificationData.title"
+								ng-required="notificationData.userAsTitle=='false'"
+								class="form-control"
+								required
+							>
+						</div>								
+						<div class="form-group">
+							<label class="control-label">Type<span class="required-symbol">*</span></label>
+							<select 
+								ng-model="notificationData.type"
+								name="type"
+								class="form-control"
+								required
+							>
+								<option value="">-Select a Type-</option>
+								<option value="notification-alert">Alert</option>
+								<option value="notification-prompt">Prompt</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Recipients<span class="required-symbol">*</span></label>
+
+							<h5>Single User</h5>
+							<div 
+								ng-repeat="recipient in possibleRecipients | orderBy:'label'" 
+								class="checkbox">
+								<label class="control-label">\{{ recipient.label }}
+								<input
+									type="checkbox"
+									ng-model="recipient.selected"
+									value="\{{ recipient.value }}"
+									ng-checked="recipient.selected" />
+								</label>
+							</div>
+						</div>
+						<div 
+							class="form-group">
+							<h5>User Groups</h5>
+							<div ng-repeat="group in groups | orderBy:'label'" class="checkbox">
+								<label class="control-label">\{{group.label}}
+									<input 
+										type="checkbox" 
+										ng-model="group.selected" 
+										value="\{{group.value}}" 
+										ng-checked="group.selected" />
+								</label>
+							</div>	
+						</div>
+						<div class="form-group">
+							<h5>Exceptions</h5>
+							<div 
+								ng-repeat="recipient in possibleExceptions | orderBy:'label'" 
+								class="checkbox">
+								<label class="control-label">\{{ recipient.label }}
+								<input
+									type="checkbox"
+									ng-model="recipient.selected"
+									value="\{{ recipient.value }}"
+									ng-checked="recipient.selected" />
+								</label>
+							</div>						
+						</div>
+						<div class="form-group">
+							<label class="control-label">Message<span class="required-symbol">*</span></label>
+							<textarea
+								ng-model="notificationData.message"
+								name="message"
+								class="form-control"
+								ck-editor
+								required
+								rows="5"
+							></textarea>
+							<div class="alert alert-info alert-block help-block">
+								<p>You may use variables from the user's profile as well as from the inputted action in the notification.</p>
+								<p><b>User Profile</b>: You may use variables from the user profile by specifying <b>{user:<i>apple</i>}</b> where "apple" is the name of the variable. In addition to the fields from the user profile you may use <b>{user:<i>firstName</i>}, {user:<i>lastName</i>}, {user:<i>name</i>}, and {user:<i>phone</i>}</b>.</p>
+								<p><b>Action</b>: You may use variables from action by specifying <b>{action:<i>orange</i>}</b> where "orange" is the name of the variable.</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Map</label>
+							<select
+								class="form-control"
+								ng-model="notificationData.map">
+								<option value="true">Show a map of the user's location</option>
+								<option value="false">Do not show a map of the user's location</option>
+							</select>
+						</div>
+						<div 
+							class="form-group"
+							ng-if="notificationData.type == 'notification-prompt'"
+							>
+							<h4 class="page-header">Actions</h4>
+
+							<ul
+								class="list-group">
+								<li
+									class="list-group-item"
+									ng-repeat="action in notificationData.items | orderBy:'order'">
+									<h5 
+										class="pull-left">
+										<span ng-bind="action.name"></span>
+										<span
+											ng-if="action.copy">
+											(Linked)
+											&nbsp;
+											<i class="fa fa-chain"></i>
+										</span>
+									</h5>
+									<div class="btn-toolbar">
+										<div class="pull-right">
+											<button
+												type="button"
+												class="btn btn-default"
+												ng-click="move(action.id, 'up')"
+											><i class="fa fa-arrow-up"></i></button>
+											<button
+												type="button"
+												class="btn btn-default"
+												ng-click="move(action.id,'down')"
+											><i class="fa fa-arrow-down"></i></button>
+
+											<button
+												type="button"
+												class="btn btn-primary"
+												ng-if="action.copyId"
+												ng-click="changeView(action.type,action.copyId)"
+											>Modify</button>
+											<button
+												type="button"
+												class="btn btn-primary"
+												ng-if="!action.copyId"
+												ng-click="changeView(action.type,action.id)"
+											>Modify</button>
+
+											<button
+												type="button"
+												class="btn btn-danger"
+												ng-click="removeConfirmation(action.id)"
+											>Remove</button>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</li>
+							</ul>
+
+							<div
+								class="form-group">
+								<label class="control-label">Existing Actions</label>
+								<select
+									ng-model="addExistingAction"
+									ng-options="action.id as action.name for action in existingActions"
+									class="form-control">
+									<option value="">-Select an existing action-</option>
+								</select>
+							</div>
+
+							<div class="btn-toolbar">
+								<div class="pull-right">
+									<button
+										type="button"
+										class="btn btn-primary"
+										ng-click="addExisting(currentId, addExistingAction, 'notification')"
+									>
+										<i class="fa fa-copy"></i>&nbsp;Copy Existing Action
+									</button>																
+									<button
+										type="button"
+										class="btn btn-info"
+										ng-click="linkExisting(currentId, addExistingAction, 'notification')"
+									>
+										<i class="fa fa-link"></i>&nbsp;Link Existing Action
+									</button>								
+									<button
+										type="button"
+										class="btn btn-warning"
+										ng-click="addNewAction(currentId)"
+									>
+										<i class="fa fa-plus"></i>&nbsp;Add New Action
+									</button>													
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+
+						<div class="btn-toolbar">
+							<div class="pull-right">
+
+								<button 
+									type="button" 
+									class="btn btn-danger" 
+									ng-click="removeConfirmation(currentId, true)"
+								>Remove</button>					
+
+								<button 
+									type="button" 
+									class="btn btn-primary" 
+									ng-click="submit()"
+									ng-disabled="notificationForm.$invalid || !recipientSelected()"								
+								>
+									<i class="fa fa-save"></i>&nbsp;
+									<span ng-bind="saveButton"></span>
+								</button>
+
+							</div>
+							<div class="clearfix"></div>
+						</div>						
+					</div>
+
+					<div ng-if="notificationData.copyId">
+						<button 
+							type="button" 
+							class="btn btn-danger" 
+							ng-click="removeConfirmation(currentId, true)"
+						>Remove this linked notification</button>						
+					</div>
+				</form>
+
+				<form name="actionForm" ng-if="view == 'action'" novalidate>				
+					<div
+						ng-if="!actionData.copyId">
+						<div class="form-body">
+							<div class="form-group">
+								<label class="control-label">Action Name</label>
+								<input type="text" ng-model="actionData.name" class="form-control" required>
+							</div>
+
+							<div class="form-group">
+								<label class="control-label">Action Label</label>
+								<input type="text" ng-model="actionData.label" class="form-control" required>
+							</div>						
+
+							<div class="form-group">
+								<label class="control-label">
+									Button Color
+									<a href="javascript:;" ng-click="showColors()">
+										<i class="fa fa-info-circle"></i>	
+									</a>
+								</label>
+								<select ng-model="actionData.color" class="form-control" required>
+									<option value="light">Light</option>
+									<option value="stable">Stable</option>
+									<option value="positive">Positive</option>
+									<option value="calm">Calm</option>
+									<option value="balanced">Balanced</option>
+									<option value="energized">Energized</option>
+									<option value="assertive">Assertive</option>
+									<option value="royal">Royal</option>
+									<option value="dark">Dark</option>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label class="control-label">Invokation Times</label>
+								<select
+									ng-model="actionData.invokationTimes"
+									class="form-control">
+									<option value="single">Single</option>
+									<option value="multiple">Multiple</option>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label class="control-label">Invokes</label>
+								<select ng-model="actionData.invoke" class="form-control">
+									<optgroup label="Assistance">
+										<option value="cancel-request">Cancel Request (User)</option>
+										<option value="complete-request">Complete Request (Agent)</option>
+										<option value="additional-agent-request">Additional Agent (Agent)</option>
+										<option value="accept-request">Accept Request (Agent)</option>
+										<option value="decline-request">Decline Request (Agent)</option>
+									</optgroup>
+									<optgroup label="Submission">
+										<option value="submission/submit">Submit Data</option>
+									</optgroup>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label class="control-label">Status Message</label>
+								<input type="text" ng-model="actionData.status" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label class="control-label">Status Code</label>
+								<input type="number" ng-model="actionData.statusCode" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<h4 class="page-header">Disables Actions</h4>
+								<div
+									ng-repeat="action in possibleDeleteActions | orderBy:'notification'">
+									<label class="control-label checkbox">		
+										<input
+											type="checkbox"
+											ng-model="action.selected">
+										\{{ action.name }}
+									</label>
+								</div>
+							</div>							
+
+							<div class="form-group">
+								<h4 class="page-header">Notifications</h4>
+
+								<ul
+									class="list-group">
+									<li
+										class="list-group-item"
+										ng-repeat="notification in actionData.items">
+										<h5 
+											class="pull-left"
+											ng-bind="notification.name"></h5>
+										<div class="btn-toolbar">
+											<div class="pull-right">
+												<button
+													type="button"
+													class="btn btn-primary"
+													ng-if="notification.copyId"
+													ng-click="changeView(notification.type,notification.copyId)"
+												>Modify</button>
+												<button
+													type="button"
+													class="btn btn-primary"
+													ng-if="!notification.copyId"
+													ng-click="changeView(notification.type,notification.id)"
+												>Modify</button>											
+												<button
+													type="button"
+													class="btn btn-danger"
+													ng-click="removeConfirmation(notification.id)"
+												>Remove</button>
+											</div>
+											<div class="clearfix"></div>
+										</div>
+									</li>
+								</ul>
+
+								<div
+									class="form-group">
+									<label class="control-label">Existing Notifications</label>
+									<select
+										ng-model="addExistingNotification"
+										ng-options="notification.id as notification.name for notification in existingNotifications"
+										class="form-control">
+										<option value="">-Select an existing notification-</option>
+									</select>
+								</div>							
+
+								<div class="btn-toolbar">
+									<div class="pull-right">
+										<button
+											type="button"
+											class="btn btn-primary"
+											ng-click="addExisting(currentId,addExistingNotification, 'action')"
+										>
+											<i class="fa fa-copy"></i>&nbsp;Copy Existing Notification
+										</button>									
+										<button
+											type="button"
+											class="btn btn-info"
+											ng-click="linkExisting(currentId,addExistingNotification, 'action')"
+										>
+											<i class="fa fa-link"></i>&nbsp;Link Existing Notification
+										</button>
+										<button
+											type="button"
+											class="btn btn-success"
+											ng-click="addNewNotification(currentId)"
+										>
+											<i class="fa fa-plus"></i>&nbsp;Add New Notification
+										</button>								
+									</div>
+									<div class="clearfix"></div>
+								</div>
+							</div>						
+						</div>
+
+						<div class="btn-toolbar">
+							<div class="pull-right">
+								<button 
+									type="button" 
+									class="btn btn-danger" 
+									ng-click="removeConfirmation(currentId, true)"
+								>Remove</button>
+
+								<button 
+									type="button" 
+									class="btn btn-primary" 
+									ng-click="submit()"
+									ng-disabled="actionForm.$invalid"
+								>
+									<i class="fa fa-save"></i>&nbsp;
+									<span ng-bind="saveButton"></span>							
+								</button>
+
+							</div>
+							<div class="clearfix"></div>
+						</div>							
+					</div>
+				
+					<div 
+						ng-if="actionData.copyId">
+						<button 
+							type="button" 
+							class="btn btn-danger" 
+							ng-click="removeConfirmation(currentId, true)"
+						>Remove this linked action</button>
+					</div>
+				</form>
+
+			</div>
+		</section>		 
+	</div>
+	<div class="col-lg-4" ng-if="id != undefined" id="EventSpecificsContainer" style="">
+		<section class="panel panel-primary">
+			<header class="panel-heading">Event Specifics</header>
+			<div class="panel-body">
+				<collection collection="[eventData]" id="id"></collection>
+			</div>
+		</section>		
+	</div>
+</div>
+
+<script type="text/ng-template" id="colors">
+	<div class="modal-body">
+		<iframe ng-src="/ionic/colors.html" style="width:328px;height:576px;border:none;"></iframe>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="hideColors()">Close</button>
+	</div>
+</script>

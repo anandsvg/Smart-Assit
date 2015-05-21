@@ -1,0 +1,29 @@
+<section ng-controller="GroupModifyCtrl as g" class="panel col-lg-6">
+	<header class="panel-heading">Modify Group</header>
+	<div class="panel-body">
+		<form  id="modify-group" role="form" class="" ng-submit="update(_id,data.groupData);">
+			<div class="form-group">
+				<label>Label</label>
+				<input type="text" class="form-control" ng-model="data.groupData.label" required focus>
+			</div>
+			<div class="form-group">
+				<label>Type</label>
+				<select class="form-control" ng-model="data.groupData.type" required>
+					<option value="user">User</option>
+					<option value="agent">Agent</option>
+					<option value="admin">Admin</option>
+					<option value="custom">Custom</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">User Profile</label>
+				<select class="form-control" ng-model="data.groupData.userProfile" ng-options="item._id as item.title for item in data.questionnaires">
+					<option value="">-Select a questionnaire-</option>
+				</select>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-primary pull-right">Submit</button>
+			</div>		
+		</form>		
+	</div>
+</section>

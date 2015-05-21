@@ -1,0 +1,30 @@
+<form 
+	name="inputQuestionnaire" 
+	id="input-questionnaire" 
+	role="form" 
+	class="questionnaire" 
+	onsubmit="return false;"	
+>
+	<section class="panel">
+		<header class="panel-heading tab-bg-dark-navy-blue">
+			<ul class="nav nav-tabs">
+				<li ng-class="{'active': router.activeDevelopTab == 'general'}">
+					<a ng-click="router.changeView('develop','general')">General</a>
+				</li>
+				<li ng-class="{'active': router.activeDevelopTab == 'questions'}">
+					<a ng-click="router.changeView('develop','questions')">Questions</a>
+				</li>				
+			</ul>
+		</header>		
+		<div class="panel-body">	
+			<div class="tab-content">
+				<div id="general-pane" class="tab-pane scroll-pane" ng-class="{'active': router.activeDevelopTab == 'general'}">
+					{{> questionnaire-input-develop-general}}
+				</div>
+				<div id="questions-pane" class="tab-pane scroll-pane" ng-class="{'active': router.activeDevelopTab == 'questions'}">
+					{{> questionnaire-input-develop-questions}}				
+				</div>				
+			</div>
+		</div>
+	</section>
+</form>

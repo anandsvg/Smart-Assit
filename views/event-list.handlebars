@@ -1,0 +1,21 @@
+<div ng-controller="EventListCtrl as Event">
+	<table class="table table-bordered table-striped table-hover">		
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Invokes</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="e in events | orderBy:title">
+				<td>\{{e.name}}</td>
+				<td></td>
+				<td>
+					<a href="#/event/\{{e._id}}" class="btn btn-default">Modify</a>
+					<button class="btn btn-danger" ng-click="Event.remove(e._id)">Remove</button>
+				</td>
+			</tr>			
+		</tbody>
+	</table>
+</div>

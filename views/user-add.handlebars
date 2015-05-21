@@ -1,0 +1,30 @@
+<section ng-controller="UserAddCtrl as u" class="panel col-lg-6">
+	<header class="panel-heading">Add User</header>
+	<div class="panel-body">
+		<form  id="add-user" role="form" class="" ng-submit="add();">
+			<div class="form-group">
+				<label>First Name</label>
+				<input type="text" class="form-control" ng-model="data.firstName" required focus>
+			</div>
+			<div class="form-group">
+				<label>Last Name</label>
+				<input type="text" class="form-control" ng-model="data.lastName" required>
+			</div>			
+			<div class="form-group">
+				<label>Email</label>
+				<input type="email" class="form-control" ng-model="data.email" required>
+			</div>
+			<div class="form-group">
+				<label>Groups</label>
+				<div ng-repeat="group in groups | orderBy:'label'" class="checkbox">
+					<label class="control-label">\{{group.label}}
+						<input type="checkbox" ng-model="group.selected" value="\{{group.value}}" ng-checked="group.selected">
+					</label>
+				</div>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-primary pull-right">Submit</button>
+			</div>		
+		</form>		
+	</div>
+</section>

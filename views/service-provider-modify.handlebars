@@ -1,0 +1,14 @@
+<section ng-controller="ServiceProviderModifyCtrl as sp" class="panel col-lg-6">
+	<heading class="panel-heading">Modify Service Provider</heading>
+	<div class="panel-body">
+		<form  id="modify-service-provider" role="form" class="" ng-submit="sp.update(_id,data);">
+			<div class="form-group">
+				<label>Service Provider</label>
+				<input type="text" class="form-control" ng-model="data.company" required focus>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-primary pull-right">Submit</button>
+			</div>		
+		</form>		
+	</div>
+</section>

@@ -1,0 +1,26 @@
+<section 
+	ng-repeat="e in data.events" 
+	class="panel event" 
+	ng-form="event" 
+	ng-class="{'panel-primary' : !e.isCollapsed,'panel-info' : e.isCollapsed}"
+>
+	<header class="panel-heading" ng-click="e.isCollapsed = !e.isCollapsed" ng-mouseenter="e.tip = true" ng-mouseleave="e.tip = false">
+		<div class="title col-sm-8">\{{e.label}}</div>
+		<div ng-show="e.tip" class="tip col-sm-2">(Expand&nbsp;/&nbsp;Collapse)</div>
+		<div class="tools pull-right">
+			<a class="fa fa-times" href="javascript:;" ng-click="e.remove()" title="Remove Event"></a>
+		</div>
+	</header>
+	<div class="panel-body" collapse="e.isCollapsed">
+		<div class="form-group">
+			<label class="control-label">Select Event</label>
+			<select 
+				ng-model="e.event" 
+				class="form-control" 
+				ng-options="event._id as event.name for event in events"
+			>
+				<option value="">-Select Event-</option>
+			</select>		
+		</div>		
+	</div>
+</section>

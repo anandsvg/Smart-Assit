@@ -1,0 +1,41 @@
+require.config({
+	paths: {
+		'angular': '/components/angular/angular.min',
+		'ui-router': '/components/angular-ui-router/release/angular-ui-router',
+		'angularAMD': '/components/angularAMD/angularAMD.min',
+		'underscore': '/components/underscore/underscore',
+		'ngload': '/components/angularAMD/ngload.min',
+		'ui-bootstrap': '/components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min',
+		'cryptojs': '/components/cryptojs/lib/Crypto',
+		'sha1': '/components/cryptojs/lib/SHA1',
+		'factories/CurrentState': '/scripts/factories/CurrentState',
+		'controllers/TopNavCtrl': '/scripts/controllers/TopNavCtrl',
+		'controllers/SideNavCtrl': '/scripts/controllers/SideNavCtrl',
+		'directives/FocusDir': '/scripts/directives/FocusDir',
+		'directives/SmartDir': '/scripts/directives/SmartDir',
+		'jquery': '/js/jquery',
+		'niceScroll': '/js/jquery.nicescroll',
+		'scrollTo': '/js/jquery.scrollTo.min',
+		'respond': '/js/respond.min',
+		'ckeditor': '/assets/ckeditor/ckeditor',
+		'common-scripts': '/js/common-scripts'
+	},
+	shim: {
+		'angularAMD': ['angular'],
+		'ui-router': ['angular'],
+		'ui-bootstrap': ['angular'],
+		'sha1': ['cryptojs'],
+		'ckeditor': ['angular', 'jquery'],
+		'factories/ServiceProviderModel': ['angular'],
+		'factories/QuestionnairesModel': ['angular'],
+		'factories/CurrentState': ['angular'],
+		'controllers/TopNavCtrl': ['angular'],
+		'controllers/SideNavCtrl': ['angular', 'factories/CurrentState'],
+		'directives/FocusDir': ['angular'],
+		'directives/SmartDir': ['angular'],
+		'niceScroll': ['jquery'],
+		'scrollTo': ['jquery'],
+		'common-scripts': ['jquery', 'niceScroll', 'scrollTo']
+	},
+	deps: ['app']
+});

@@ -1,0 +1,22 @@
+{
+	"name": "SmartAssist",
+	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Smartassist/smartassist"
+	},
+	"dependencies": {
+		"async": "*",
+		"bower": "*",
+		"connect": "*",
+		"express": "3.0.0",
+		"mongodb": "*",
+		"underscore": "*",
+		"socket.io": "*",
+		"connect-redis": "*",
+		"nodemailer": "*",
+		"express-rewrite": "*",
+		"rabbit.js": "*",
+		"express3-handlebars": "*"
+	}
+}

@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SimplAssist:jar">
+    <output-path>$PROJECT_DIR$/../SimplAssist_jar</output-path>
+    <root id="archive" name="SimplAssist.jar">
+      <element id="module-output" name="SimplAssist" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/SimplAssist/libs/rabbitmq-client.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/SimplAssist/libs/json-simple-1.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/SimplAssist/libs/mongo-2.10.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="password">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Mosaddek">
+    <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+    <link rel="shortcut icon" href="img/favicon.png">
+
+    <title>SmartAssist</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/style-responsive.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+<style>
+.error {
+  color: #B94A48;
+}
+
+input.has-visited.ng-invalid:not(.has-focus) {
+
+}
+</style>
+
+</head>
+
+  <body class="login-body">
+
+    <div class="container">
+
+        <h2 style="text-align:center;">Your email has been updated!</h2>
+
+    </div>
+
+
+
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/components/angular/angular.min.js"></script>
+    <script>
+    var password = angular.module('password', []);
+    
+    password.controller('PasswordCtrl', function($scope, $http) {
+      $scope.data = {
+        password : '',
+        passwordConfirmation : ''
+      };
+
+      $scope.password = function() {
+         $http.post('/account/password', {
+          password : $scope.data.password          
+         }).
+          success(function(data, status, headers, config) {
+            if(data.status == 1)
+            {
+              window.location = '/';
+            }
+          });
+      };
+    });
+
+    password.directive('same', function() {
+      return {
+        restrict : 'A',
+        scope : true,
+        require : 'ngModel',
+        link : function(scope,$element,$attrs,$model) {
+          scope.$watch('data',function() {
+            var valid = (scope.data.password === scope.data.passwordConfirmation);
+            $model.$setValidity('same', valid);
+          },true);
+        }
+      };
+    });  
+
+    var blurFocusDirective = function () {
+        return {
+            restrict: 'E',
+            require: '?ngModel',
+            link: function (scope, elm, attr, ctrl) {
+                if (!ctrl) {
+                    return;
+                }
+
+                elm.on('focus', function () {
+                    elm.addClass('has-focus');
+
+                    scope.$apply(function () {
+                        ctrl.hasFocus = true;
+                    });
+                });
+
+                elm.on('blur', function () {
+                    elm.removeClass('has-focus');
+                    elm.addClass('has-visited');
+
+                    scope.$apply(function () {
+                        ctrl.hasFocus = false;
+                        ctrl.hasVisited = true;
+                    });
+                });
+
+                elm.closest('form').on('submit', function () {
+                    elm.addClass('has-visited');
+
+                    scope.$apply(function () {
+                        ctrl.hasFocus = false;
+                        ctrl.hasVisited = true;
+                    });
+                });
+
+            }
+        };
+    };
+
+    password.directive('input', blurFocusDirective);
+    password.directive('select', blurFocusDirective);      
+    </script>
+
+  </body>
+</html>

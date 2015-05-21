@@ -1,0 +1,28 @@
+<li
+	ui-sref-active="active"
+	ng-class="{'child': parent == currentSpecific}"
+	>
+	<a 
+		ng-if="member._id==id"
+		ui-sref="event/modify({id: id })"
+	>
+		<span ng-bind="member.name"></span>			
+		<i class="fa fa-bolt pull-right"></i>
+	</a>
+	<a 
+		ng-if="!member._id"
+		ui-sref="event/modify/specific({id: id, type: member.type ,specific: member.id })"			
+	>
+		<span ng-bind="member.name"></span>
+		<span
+			ng-if="member.copy">
+			(Linked)
+			&nbsp;
+			<i class="fa fa-chain"></i>
+		</span>			
+		<i class="fa fa-bolt pull-right" ng-if="member.type=='event'"></i>
+		<i class="fa fa-envelope-o pull-right" ng-if="member.type=='notification-alert'"></i>
+		<i class="fa fa-question-circle pull-right" ng-if="member.type=='notification-prompt'"></i>
+		<i class="fa fa-gavel pull-right" ng-if="member.type=='action'"></i>		
+	</a>
+</li>

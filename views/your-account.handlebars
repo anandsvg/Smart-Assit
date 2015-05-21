@@ -1,0 +1,95 @@
+<section ng-controller="YourAccountCtrl">	
+	<div class="col-lg-6">
+		<section class="panel">
+			<header class="panel-heading">
+				Your Account
+			</header>
+			<div class="panel-body">			
+				<form name="accountForm" novalidate>
+					<div class="form-group">
+						<label class="control-label">First Name</label>
+						<input
+							type="text"
+							name="firstName"
+							ng-model="data.firstName"
+							class="form-control"
+							required>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Last Name</label>
+						<input
+							type="text"
+							name="lastName"
+							ng-model="data.lastName"
+							class="form-control"
+							required>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Email</label>
+						<input
+							type="email"
+							name="email"
+							ng-model="data.email"
+							class="form-control"
+							autocomplete="off"
+							required>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Password</label>
+						<input
+							type="password"
+							name="password"
+							ng-model="data.password"
+							ng-pattern="/^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d).*$/"
+							class="form-control"
+							autocomplete="off"
+							same
+							blur-focus>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Password Confirmation</label>
+						<input
+							type="password"
+							name="passwordConfirmation"
+							ng-model="data.passwordConfirmation"
+							ng-pattern="/^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d).*$/"
+							class="form-control"
+							autocomplete="off"
+							same
+							blur-focus>
+					</div>
+		            <div ng-show="(accountForm.password.hasVisited && !accountForm.password.hasFocus) && (accountForm.passwordConfirmation.hasVisited && !accountForm.passwordConfirmation.hasFocus)">
+		              <h4 class="help-block error" ng-show="accountForm.password.$dirty && accountForm.passwordConfirmation.$dirty && accountForm.password.$error.same">The passwords do not match!</h4>
+		              <h4 class="help-block error" ng-show="(accountForm.password.$dirty && accountForm.password.$error.pattern) || (accountForm.passwordConfirmation.$dirty && accountForm.passwordConfirmation.$error.pattern)">Your password must be at least eight characters, with one lowercase letter, one uppercase letter, and one number!</h4>
+		            </div>					
+					<div class="form-group">
+						<div ng-repeat="sp in serviceProviders" class="radio">
+							<label>
+								<input 
+									type="radio" 
+									name="defaultServiceProvider" 
+									ng-model="data.defaultServiceProvider"
+									ng-value="sp._id"
+									ng-checked="sp.selected">
+								<span ng-bind="sp.company"></span>
+							</label>
+						</div>
+					</div>
+
+					<div class="btn-toolbar">
+						<div class="pull-right">
+							<button
+								type="button"
+								class="btn btn-primary"
+								ng-click="submit()"
+								ng-disabled="accountForm.$invalid">
+									<i class="fa fa-save"></i>&nbsp;
+									<span ng-bind="actionButton"></span>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</section>

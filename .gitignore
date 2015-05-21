@@ -1,0 +1,8 @@
+node_modules/
+pid/
+logs/
+pub/components
+app/www/components
+app/.idea/
+app/out/
+sftp-config.json

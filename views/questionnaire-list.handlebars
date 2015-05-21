@@ -1,0 +1,23 @@
+<div ng-controller="QuestionnaireListCtrl as Questionnaire">
+	<table class="table table-bordered table-striped table-hover">		
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Associations</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="q in questionnaires | orderBy:title">
+				<td>\{{q.title}}</td>
+				<td>\{{questionnaireGroups[q._id].join(", ")}}</td>
+				<td>
+					<a href="#/questionnaire/\{{q._id}}" class="btn btn-default">Modify</a>
+					<a href="#/questionnaire/\{{q._id}}/preview" class="btn btn-info">Preview</a>
+					<a href="#/questionnaire/\{{q._id}}/results" class="btn btn-success">Results</a>
+					<button class="btn btn-danger" ng-click="Questionnaire.remove(q._id)">Remove</button>
+				</td>
+			</tr>			
+		</tbody>
+	</table>
+</div>

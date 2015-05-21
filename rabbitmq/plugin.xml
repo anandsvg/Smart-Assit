@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://cordova.apache.org/ns/plugins/1.0"
+    id="com.simplassist.simpl.rabbitmq"
+    version="0.0.1">
+
+    <name>RabbitMQ</name>
+    <description>RabbitMq</description>
+    <license>Apache</license>
+    <keywords>preferences, settings</keywords>
+
+    <js-module src="www/rabbitmq.js">
+        <clobbers target="rabbitmq" />
+    </js-module>           
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="RabbitMQ">
+                <param name="android-package" value="com.simplassist.simpl.rabbitmq.RabbitMQ" />
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">  
+            <receiver android:name="com.simplassist.simpl.rabbitmq.RabbitMQBootReceiver">
+                <intent-filter>     
+                    <action android:name="android.intent.action.BOOT_COMPLETED"></action>   
+                </intent-filter> 
+            </receiver>            
+            <service android:name="com.simplassist.simpl.rabbitmq.RabbitMQService">
+                <intent-filter>     
+                    <action android:name="com.simplassist.simpl.rabbitmq.RabbitMQService" />
+                </intent-filter> 
+            </service>            
+        </config-file>        
+                
+    </platform>
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="RabbitMQ">
+                <param name="ios-package" value="RabbitMQ" />
+            </feature>
+        </config-file>
+    </platform>
+</plugin>

@@ -1,0 +1,50 @@
+    //useDb(function(db) {
+        //        console.log("groupid"+groupid);
+        //
+        //        var cursor= db.collection('users').find({
+        //            groups:
+        //       }).toArray(function(err,item){
+        //               console.log("result"+item);
+        //
+        //           });
+        //    //cursor.each(function(err, item) {
+        //    //        //console.log("item"+item.serviceProviders.getServiceProviders().groups[0]);
+        //    //
+        //    //
+        //    //    // If the item is null then the cursor is exhausted/empty and closed
+        //    //    if (item == null) {
+        //    //        // Show that the cursor is closed
+        //    //        cursor.toArray(function (err, items) {
+        //    //
+        //    //
+        //    //            // Let's close the db
+        //    //            db.close();
+        //    //        });
+        //    //    }
+        //    //    else{
+        //    //        console.log(item.firstName);
+        //    //
+        //    //        //var sp=item.serviceProviders.
+        //    //    }
+        //    //
+        //    //
+        //    //});
+        //    }
+        //);
+        //useDb(function(db){
+        //    db.collection('users').find({
+        //            'groups.0.by': groupid
+        //
+        //        },{
+        //            'groups.$':1
+        //        }
+        //        ,function(err,results) {
+        //            if (err) {
+        //                return console.dir(err);
+        //            }
+        //
+        //            console.log("userId"+results.get('_id'));
+        //        }
+        //    );
+        //
+        //})

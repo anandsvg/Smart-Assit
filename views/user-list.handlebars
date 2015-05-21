@@ -1,0 +1,31 @@
+<div ng-controller="UserListCtrl as u">
+	<table class="table table-bordered table-striped table-hover">		
+		<thead>
+			<tr>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+				<th>Groups</th>
+                <th>Vehicle Info</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="user in users | orderBy:lastName" >
+				<td>\{{user.firstName}}</td>
+				<td>\{{user.lastName}}</td>
+				<td>\{{user.email}}</td>
+				<td>\{{userGroups[user._id].join(", ")}}</td>
+                <td><span ng-show="!user.vehicleInfo">Not available</span>
+                    <span ng-show="user.vehicleInfo">\{{"Make: "+user.vehicleInfo.make}}<br>
+                        \{{"Model: "+user.vehicleInfo.model}}<br>
+                        \{{"\nYear: "+user.vehicleInfo.year}}<br>
+                        \{{"\nColor: "+user.vehicleInfo.color}}</span> </td>
+				        <td>
+					<a href="#/user/\{{user._id}}/modify" class="btn btn-default">Modify</a>
+					<button class="btn btn-danger" ng-click="remove(user._id)">Remove</button>
+				</td>
+			</tr>			
+		</tbody>
+	</table>
+</div>

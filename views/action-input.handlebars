@@ -1,0 +1,78 @@
+<section ng-controller="ActionCtrl as q" class="col-lg-12 fixed-bottom">
+	<section id="ActionContainer" class="panel">
+		<header class="panel-heading tab-bg-dark-green tab-right ">
+			<ul class="nav nav-tabs pull-right">
+				<li ng-class="{active: router.activeTab=='develop'}">
+					<a href="javascript:;" ng-click="router.changeView('develop')">
+						<i class="fa fa-wrench"></i>&nbsp;Develop
+					</a>
+				</li>
+				<li ng-class="{active: router.activeTab=='preview'}">
+					<a href="javascript:;" ng-click="router.changeView('preview')">
+						<i class="fa fa-eye"></i>&nbsp;Preview
+					</a>
+				</li>
+			</ul>
+			<span class="hidden-sm wht-color">
+				<a ui-sref="action" class="wht-color">Actions</a>&nbsp;&nbsp;//
+				\{{action}} Action
+			</span>
+		</header>
+		<div class="panel-body">
+			<div class="tab-content">
+				<!--DEVELOP TAB START-->
+				<div id="develop" class="tab-pane" ng-class="{active: router.activeTab=='develop'}">
+					{{> action-input-develop}}
+				</div>
+				<!--DEVELOP TAB END-->
+				<!--PREVIEW TAB START-->
+				<div id="preview" class="tab-pane" ng-class="{active: router.activeTab=='preview'}" ng-controller="ActionPreviewCtrl">
+					{{> action-input-preview}}
+				</div>
+				<!--PREVIEW TAB END-->
+			</div>
+		</div>
+	</section>		
+
+	<nav id="form-bottom-bar">
+		<ul id="form-buttons-left" class="nav navbar-nav form-buttons">			
+			<li ng-show="router.activeDevelopTab=='questions'">
+				<button type="button" class="btn btn-success" ng-click="addQuestion()">
+					<i class="fa fa-plus"></i>&nbsp;Additional Question
+				</button>
+			</li>		
+			<li ng-show="router.activeDevelopTab=='questions'">
+				<button type="button" class="btn btn-white" ng-click="q.expandQuestions()">Expand Questions</button>
+			</li>
+			<li ng-show="router.activeDevelopTab=='questions'">
+				<button type="button" class="btn btn-white" ng-click="q.collapseQuestions()">Collapse Questions</button>
+			</li>												
+			<li ng-show="router.activeDevelopTab=='event'">
+				<button type="button" class="btn btn-success" ng-click="q.addEvent()">
+					<i class="fa fa-plus"></i>&nbsp;Additional Event
+				</button>
+			</li>		
+			<li ng-show="router.activeDevelopTab=='event'">
+				<button type="button" class="btn btn-white" ng-click="q.expandEvents()">Expand Events</button>
+			</li>
+			<li ng-show="router.activeDevelopTab=='event'">
+				<button type="button" class="btn btn-white" ng-click="q.collapseEvents()">Collapse Events</button>
+			</li>															
+		</ul>
+		<ul id="form-buttons-right" class="nav navbar-nav form-buttons">
+			<li>
+				<button type="button" class="btn btn-danger" ng-click="q.reset()">
+					<i class="fa fa-refresh"></i>&nbsp;
+					Reset
+				</button>
+			</li>
+			<li>				
+				<button type="button" class="btn" ng-class="{'btn-primary':inputAction.$valid,'btn-danger':inputAction.$invalid}" ng-disabled="inputAction.$invalid" ng-click="submit()">
+					<i class="fa fa-save"></i>&nbsp;
+					\{{saveButton}}
+				</button>
+			</li>
+		</ul>
+	</nav>
+			
+</section>

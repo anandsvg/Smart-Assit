@@ -1,0 +1,23 @@
+<div ng-controller="ActionListCtrl as Action">
+	<table class="table table-bordered table-striped table-hover">		
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Associations</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="a in actions | orderBy:title">
+				<td>\{{a.title}}</td>
+				<td>\{{actionGroups[a._id].join(", ")}}</td>
+				<td>
+					<a href="#/action/\{{a._id}}" class="btn btn-default">Modify</a>
+					<a href="#/action/\{{a._id}}/preview" class="btn btn-info">Preview</a>
+					<a href="#/action/\{{a._id}}/results" class="btn btn-success">Results</a>
+					<button class="btn btn-danger" ng-click="Action.remove(a._id)">Remove</button>
+				</td>
+			</tr>			
+		</tbody>
+	</table>
+</div>

@@ -1,0 +1,47 @@
+<div class="form-group" ng-class="{'has-error' : inputAction.title.$dirty && inputAction.title.$invalid}">
+	<label class="control-label">Title<span class="required-symbol">*</span></label>
+	<input type="text" class="form-control" name="title" ng-model="data.title" required>
+	<div ng-show="inputAction.title.$dirty && inputAction.title.$invalid">
+		<span class="help-block" ng-show="inputAction.title.$error.required">This is required.</span>
+	</div>									
+</div>
+<div class="form-group">
+	<label class="control-label">Description</label>
+	<textarea ng-model="data.description" name="description" class="form-control"></textarea>
+</div>
+<div class="form-group">
+	<label class="control-label">Based on Questionnaire</label>
+	<select 
+		ng-model="data.basedOn" 					
+		ng-disabled="action != 'Add' && data.basedOn != ''"
+		class="form-control"
+		ng-options="questionnaire._id as questionnaire.title for questionnaire in questionnaires"
+	>
+		<option value="">-No Questionnaire-</option>
+	</select>
+</div>
+<div class="form-group" ng-class="{'has-error' : inputAction.description.$invalid}">
+	<label class="control-label">Submit button text<span class="required-symbol">*</span></label>
+	<input type="text" ng-model="data.submitText" name="submitText" class="form-control" required>
+	<div ng-show="inputAction.description.$invalid">
+		<span class="help-block" ng-show="inputAction.description.$error.required">This is required.</span>
+	</div>																		
+</div>						
+<div class="form-group">
+	<label class="control-label">Groups</label>
+	<div ng-repeat="group in groups | orderBy:'label'" class="checkbox">
+		<label class="control-label">\{{group.label}}
+			<input type="checkbox" ng-model="group.selected" value="\{{group.value}}" ng-checked="group.selected">
+		</label>
+	</div>			
+</div>						
+<div class="form-group">
+	<label class="control-label">Numbering Style</label>
+	<select ng-model="data.numberingStyle" class="form-control">
+		<option value="none">None</option>
+		<option value="number-dot">1., 2., 3.</option>
+		<option value="number-parentheses">1), 2), 3)</option>
+		<option value="letter-dot">A., B., C.</option>
+		<option value="letter-parentheses">A), B), C)</option>
+	</select>
+</div>

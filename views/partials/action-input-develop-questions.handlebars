@@ -1,0 +1,185 @@
+<section ng-repeat="ques in data.questions | orderBy:'order'" class="panel question" ng-form="question" ng-class="{'panel-primary' : !ques.isCollapsed,'panel-info' : ques.isCollapsed}">
+		<header class="panel-heading" ng-mouseenter="ques.tip = true" ng-mouseleave="ques.tip = false">
+			<div class="title col-sm-8" ng-click="ques.isCollapsed = !ques.isCollapsed">\{{ques.label}}</div>
+			<div ng-show="ques.tip" class="tip col-sm-2" ng-click="ques.isCollapsed = !ques.isCollapsed">(Expand&nbsp;/&nbsp;Collapse)</div>
+			<div class="tools pull-right">
+				<a class="fa fa-arrow-up" href="javascript:;" ng-click="ques.move('up')" title="Up"></a>
+				<a class="fa fa-arrow-down" href="javascript:;" ng-click="ques.move('down')" title="Down"></a>
+				<a class="fa fa-times" href="javascript:;" ng-click="ques.remove()" title="Remove Question"></a>
+			</div>
+		</header>
+		<div class="panel-body" collapse="ques.isCollapsed">			
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="form-group col-sm-12" ng-class="{'has-error' : question.label.$invalid}">
+							<label class="control-label">Question Text<span class="required-symbol">*</span></label>
+							<textarea class="form-control" name="label" ng-model="ques.label" required></textarea>
+							<div ng-show="question.label.$invalid">
+								<span class="help-block" ng-show="question.label.$error.required">This is required.</span>
+							</div>
+						</div>											
+					</div>
+					<div class="row">
+						<div class="form-group col-sm-6" ng-class="{'has-error' : question.name.$invalid}">
+							<label class="control-label">Name/ID<span class="required-symbol">*</span></label>
+							<input type="text" class="form-control" name="name" ng-model="ques.name" ng-pattern="/^[a-z0-9-]+$/" ng-disabled="ques.fromQuestionnaire" required>
+							<div ng-show="question.name.$invalid">
+								<span class="help-block" ng-show="question.name.$error.required">This is required.</span>
+								<span class="help-block" ng-show="question.name.$error.pattern">Must contain only letters, numbers and the "-" character.</span>
+							</div>
+						</div>																	
+						<div class="form-group col-sm-6">
+							<label>Type</label>
+							<select 
+								ng-model="ques.type" 
+								ng-disabled="ques.fromQuestionnaire"
+								class="form-control"
+							>
+								<option value="text" ng-selected="\{{ques.type == 'text'}}">Text</option>
+								<option value="textarea" ng-selected="\{{ques.type == 'textarea'}}">Textarea</option>
+								<option value="radio" ng-selected="\{{ques.type == 'radio'}}">Multiple choice</option>
+								<!-- <option value="select" ng-selected="\{{ques.type == 'dropdown'}}">Drop Down</option> -->
+								<option value="checkbox" ng-selected="\{{ques.type == 'checkbox'}}">Check Box</option>
+								<option value="list" ng-selected="\{{ques.type == 'list'}}">List</option>
+							</select>
+						</div>												
+					</div>
+					<div class="row">
+						<div class="form-group col-sm-6">
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" ng-model="ques.required"> Required
+								</label>
+							</div>											
+						</div>
+						<div class="form-group col-sm-6" ng-show="ques.type=='text'||ques.type=='textarea'">
+							<label class="control-label">Default Text</label>
+							<input type="text" name="defaultText" ng-model="ques.defaultText" class="form-control">
+						</div>
+					</div>	
+					<div ng-show="ques.type=='text'||ques.type=='textarea'">			
+						<div class="row">
+
+						</div>
+					</div>
+					<!-- OPTIONS START -->
+					<div 
+						ng-if="ques.type=='radio'||ques.type=='checkbox'||ques.type=='select'" 
+						class="options form-horizontal"
+					>		
+						<!-- EACH OPTIONS START -->	
+						<div ng-repeat="opt in ques.options | orderBy:'order'" ng-form="option">
+							<div class="row \{{['even','odd'][$index%2]}} option">
+								<div class="form-group col-sm-4" ng-class="{'has-error' : option.label.$invalid}">
+									<label class="control-label col-sm-2">Label<span class="required-symbol">*</span></label>
+									<div class="col-sm-10">
+										<input type="text" name="label" class="form-control" ng-model="opt.label" value="\{{opt.label}}" required>								
+										<div ng-show="option.label.$invalid">
+											<span class="help-block" ng-show="option.label.$error.required">This is required.</span>
+										</div>																
+									</div>
+								</div>												
+								<div class="form-group col-sm-4" ng-class="{'has-error' : option.value.$invalid}">
+									<label class="control-label col-sm-2">Value<span class="required-symbol">*</span></label>
+									<div class="col-sm-10">
+										<input type="text" name="value" class="form-control" ng-model="opt.value" value="\{{opt.value}}" ng-pattern="/^[a-z0-9-]+$/" required>	
+										<div ng-show="option.value.$invalid">
+											<span class="help-block" ng-show="option.value.$error.required">This is required.</span>
+											<span class="help-block" ng-show="option.value.$error.pattern">Must contain only letters, numbers and the "-" character.</span>
+										</div>																
+									</div>
+								</div>				
+								<div class="form-group col-sm-4">									
+									<button 
+										type="button" 
+										class="btn btn-default up" 
+										title="Up" 
+										ng-click="q.move(ques.getOptions(),'option','up',opt.order)"
+									>
+										<i class="fa fa-arrow-up"></i>
+									</button>
+									<button 
+										type="button" 
+										class="btn btn-default down" 
+										title="Down" 
+										ng-click="q.move(ques.getOptions(),'option','down',opt.order)"
+									>
+										<i class="fa fa-arrow-down"></i>
+									</button>
+									<button 
+										type="button" 
+										class="btn" 
+										title="\{{opt.selected ? 'Is selected' : 'Is not selected'}}"
+										ng-model="opt.selected" 
+										ng-class="{'btn-info': opt.selected,'btn-primary' : !opt.selected}" 
+										ng-click="ques.makeSelectedOption(opt.order)"
+									>
+										<i class="fa fa-check"></i>
+									</button>
+									<button 
+										type="button" 
+										class="btn btn-danger" 
+										ng-click="ques.removeOption($index)"
+									>
+										<i class="fa fa-times"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<!-- EACH OPTIONS END -->
+						<hr />
+
+						<div style="padding:10px 0px;">
+							<button type="button" class="btn btn-info" ng-click="ques.addOption()">	
+								<i class="fa fa-plus"></i>&nbsp;
+								Add Option
+							</button>
+						</div>
+					</div>
+					<!-- OPTIONS END -->
+
+					<!-- ACTION SPECIFIC START -->
+					<div class="row" ng-show="ques.fromQuestionnaire">
+						<div class="form-group col-sm-3">
+							<div class="checkbox">
+								<label class="control-label">
+									<input type="checkbox" ng-model="ques.useInputtedValue" checked> Use Inputted Value From Questionnaire
+								</label>
+							</div>
+						</div>
+						<div 
+							class="form-group col-sm-3" 
+							ng-show="ques.fromQuestionnaire && ques.type == 'list'"
+						>
+							<div class="checkbox">
+								<label class="control-label">
+									<input type="checkbox" ng-model="ques.selectFromList" checked> User will select option from inputted list
+								</label>
+							</div>
+						</div>							
+					</div>
+					<!-- ACTION SPECIFIC END -->
+
+					<!-- ADVANCED SETTINGS START -->
+					<div class="panel panel-info">
+        	<div class="panel-heading" ng-click="ques.advancedIsCollapsed = !ques.advancedIsCollapsed">
+            	<h4 class="panel-title">
+          			<a href="javascript:;" class="accordion-toggle" style="width:100%;display:block;">
+          				Advanced Settings
+          				<span class="fa pull-right" ng-class="{'fa-plus':ques.advancedIsCollapsed,'fa-minus':!ques.advancedIsCollapsed}" title="Collapse/Expand"></span>
+          			</a>				                          			
+                 </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse" collapse="ques.advancedIsCollapsed" style="height: auto;">
+            	<div class="panel-body">
+        			Coming soon!
+                </div>
+            </div>
+        </div>		
+        <!-- ADVANCED SETTINGS END -->
+
+				</div>
+			</div>																		
+		</div>
+</section>	
